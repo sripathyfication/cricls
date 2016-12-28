@@ -3,7 +3,7 @@ import requests
 import json
 import argparse
 import pprint
-import threading
+import datetime
 from time import sleep
 
 #cric api related info.
@@ -12,7 +12,7 @@ scores_data = {}
 score_data = {}
 list_of_matches=[]
 display_options =['TRUE','FALSE','ALL','INDIVIDUAL']
-print_string = " " + "-"*40
+print_string = "."
 tab_string = " "*25
 
 # Fetches
@@ -48,29 +48,21 @@ def fetch_scores(match_id):
         score_data = r.json()
         return score_data
          
-
-def spawn_workers_and_do_work():
-    thread1 = threading.Thread(target=fetch_matches)
-    thread1.start()
-
 def display_scores(option_string,match_id):
-    if option_string in display_options and option_string is 'ALL':
-        print 'Going to display all scores'
     if option_string in display_options and option_string is 'INDIVIDUAL':
         score_data = fetch_scores(match_id)
-        matchid_string = " Match - " + str(match_id)
         team_string = score_data['team-1'] + " vs " + score_data['team-2']
-        print print_string + matchid_string + print_string
-        print tab_string + team_string 
-        print tab_string + "-"*len(team_string) 
-        print " SCORE :: " + score_data['score']
-        print " REQUIREMENT :: " + score_data['innings-requirement']
-        print print_string + "-"*len(matchid_string) + print_string
+        print print_string*len(tab_string + "Match  :-  " + str(match_id) + " " + team_string + " " + datetime.datetime.now().strftime("%d-%m-%Y %H:%M") + tab_string) 
+        print tab_string + "Match  :-  " + str(match_id) + " " + team_string + " " + datetime.datetime.now().strftime("%d-%m-%Y %H:%M")
+        print print_string*len(tab_string + "Match  :-  " + str(match_id) + " " + team_string + " " + datetime.datetime.now().strftime("%d-%m-%Y %H:%M") + tab_string) 
+        print " Score :- " + score_data['score']
+        print " REQUIREMENT :- " + score_data['innings-requirement']
+        print print_string*len(tab_string + "Match  :-  " + str(match_id) + " " + team_string + " " + datetime.datetime.now().strftime("%d-%m-%Y %H:%M") + tab_string) 
     
 def display_matches(option_string):
-    print print_string + print_string
-    print tab_string + " List of current matches "
-    print print_string + print_string
+    print print_string*len(tab_string + "Cricket Matches "  + datetime.datetime.now().strftime("%d-%m-%Y %H:%M") + tab_string)
+    print tab_string + "Cricket Matches "  + datetime.datetime.now().strftime("%d-%m-%Y %H:%M")
+    print print_string*len(tab_string + "Cricket Matches "  + datetime.datetime.now().strftime("%d-%m-%Y %H:%M") + tab_string)
     if option_string in display_options:
        if option_string == 'ALL':
            for match in list_of_matches:
@@ -83,6 +75,7 @@ def display_matches(option_string):
            for match in list_of_matches:
                if match['matchStarted'] is False:
                    print 'Match - ' + str(match['unique_id']) + ' :: ::  ' + match['team-1'] + ' vs ' + match['team-2']  + ' :: :: Match has not started yet.  '
+    print print_string*len(tab_string + "Cricket Matches "  + datetime.datetime.now().strftime("%d-%m-%Y %H:%M") + tab_string)
 
 #setup argument parser
 def parse_some_args():
@@ -91,7 +84,6 @@ def parse_some_args():
     parser.add_argument('-mt','--matches-true',dest="match_true",action="store_true",help='Matches currently underway')
     parser.add_argument('-mf','--matches-false',dest="match_false",action="store_true",help='Matches yet to begin ')
     parser.add_argument('-s','--score',dest="match_id",help='Enter the game id to see the score')
-    parser.add_argument('-sa','--score-all',dest="score_all",help='Display scores for all ongoing games')
     args = parser.parse_args()
     
     if args.matches:
@@ -102,8 +94,6 @@ def parse_some_args():
         display_matches('FALSE')
     if args.match_id:
         display_scores('INDIVIDUAL',args.match_id)
-    if args.score_all:
-        display_scores('ALL',0)
 
 if __name__=='__main__':
 #spawn_workers_and_do_work()
