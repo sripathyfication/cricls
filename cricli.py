@@ -14,6 +14,8 @@ list_of_matches=[]
 display_options =['TRUE','FALSE','ALL','INDIVIDUAL']
 print_string = "."
 tab_string = " "*25
+match_url = 'http://cricapi.com/api/matches/'
+score_url = 'http://cricapi.com/api/cricketScore/'
 
 # Fetches
 def store_matches(matches):
@@ -26,7 +28,6 @@ def store_matches(matches):
 
 # Creates a list of matches keyed.
 def fetch_matches():
-    match_url = 'http://cricapi.com/api/matches/'
     r = requests.post(match_url,data)
     matches = r.json()
     list_of_matches = store_matches(matches)
@@ -34,7 +35,6 @@ def fetch_matches():
 
 # Creates a dictionary of match scores keyed on match id..
 def fetch_scores(match_id):
-    score_url = 'http://cricapi.com/api/cricketScore/'
     if match_id is 0:
         for match in list_of_matches:
             sleep(0.5)
@@ -54,7 +54,7 @@ def display_scores(option_string,match_id):
         team_string = score_data['team-1'] + " vs " + score_data['team-2']
         print print_string*len(tab_string + "Match  :-  " + str(match_id) + " " + team_string + " " + datetime.datetime.now().strftime("%d-%m-%Y %H:%M") + tab_string) 
         print tab_string + "Match  :-  " + str(match_id) + " " + team_string + " " + datetime.datetime.now().strftime("%d-%m-%Y %H:%M")
-        print print_string*len(tab_string + "Match  :-  " + str(match_id) + " " + team_string + " " + datetime.datetime.now().strftime("%d-%m-%Y %H:%M") + tab_string) 
+        print tab_string + print_string*len("Match  :-  " + str(match_id) + " " + team_string + " " + datetime.datetime.now().strftime("%d-%m-%Y %H:%M"))
         print " Score :- " + score_data['score']
         print " REQUIREMENT :- " + score_data['innings-requirement']
         print print_string*len(tab_string + "Match  :-  " + str(match_id) + " " + team_string + " " + datetime.datetime.now().strftime("%d-%m-%Y %H:%M") + tab_string) 
@@ -62,7 +62,7 @@ def display_scores(option_string,match_id):
 def display_matches(option_string):
     print print_string*len(tab_string + "Cricket Matches "  + datetime.datetime.now().strftime("%d-%m-%Y %H:%M") + tab_string)
     print tab_string + "Cricket Matches "  + datetime.datetime.now().strftime("%d-%m-%Y %H:%M")
-    print print_string*len(tab_string + "Cricket Matches "  + datetime.datetime.now().strftime("%d-%m-%Y %H:%M") + tab_string)
+    print tab_string + print_string*len("Cricket Matches "  + datetime.datetime.now().strftime("%d-%m-%Y %H:%M"))
     if option_string in display_options:
        if option_string == 'ALL':
            for match in list_of_matches:
