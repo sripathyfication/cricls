@@ -49,7 +49,9 @@ def display_scores(option_string,match_id):
         for match in list_of_matches:
             if match['matchStarted'] is True:
                 score_data = fetch_scores(match['unique_id'])
-                print match['team-1'] + ' vs ' + match['team-2']  + ' :::: ' + score_data['score']
+                print tab_string + match['team-1'] + ' vs ' + match['team-2'] 
+                print ' ' *6 + score_data['score']
+                print ' ' *12 + score_data['innings-requirement']
                 print tab_string + print_string*len("Cricket Matches "  + datetime.datetime.now().strftime("%d-%m-%Y %H:%M"))
     if (option_string in display_options) and (option_string is 'INDIVIDUAL'):
         score_data = fetch_scores(match_id)
