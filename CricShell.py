@@ -29,22 +29,36 @@ class CricShell(cmd.Cmd):
         ''' Watch for updates on a match continuously unless interrupted
             Usage: watch <match-id>
             '''
-        print "Watching for updates to " +arg
+        print "Not supported"
 
     def do_score(self,arg):
         '''Get scores for match id :
             Usage: score <match-id>
         '''
-        print "\n\t\t " + self.main_header
-        table = PrettyTable(["Match-Id","Score","Team-1","Team-2","State"])
         score = self.cric_inst.get_score(int(arg))
-        table.align = "l"
-        table.add_row([int(arg),score['score'],score['team-1'],score['team-2'],score['stat']])
-        print table
+
+        if score['matchStarted'] is True:
+            print "\n\t\t " + self.main_header
+            table = PrettyTable(["Match-Id","Score","Team-1","Team-2","State"])
+            table.align = "l"
+            table.add_row([int(arg),score['score'],score['team-1'],score['team-2'],score['stat']])
+            print table
+        elif score['matchStarted'] is False and score['score']:
+            print "\n\t\t " + self.main_header
+            table = PrettyTable(["Match-Id","Score","Team-1","Team-2","State"])
+            table.align = "l"
+            table.add_row([int(arg),score['score'],score['team-1'],score['team-2'],score['stat']])
+            print table
+        else:
+            print "\n\t" + self.main_header
+            table = PrettyTable(["Match-Id","Team-1","Team-2","State"])
+            table.add_row([int(arg),score['team-1'],score['team-2'],'Match not started yet.'])
+            print table
+
 
     def do_stop(self, arg):
         ''' Stop watching for updates to match-id '''
-        print "Stopped watching for updates to " +arg
+        print "Not supported"
 
     def do_help(self, arg):
         print "\n\t\t ==== CricShell Help Menu ==== "
