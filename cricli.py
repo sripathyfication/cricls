@@ -36,7 +36,9 @@ class Cricket():
 
         # Creates a dictionary of match scores keyed on match id..
     def get_score(self,match_id):
+        data = {}
         data['unique_id'] = match_id
+        data['apikey'] = self.api_key['apikey']
         r = requests.post(self.score_url,data)
         score_data = r.json()
         return score_data
